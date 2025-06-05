@@ -1,0 +1,789 @@
+<index.html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Matriks - Shinta Aulia Zahra</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #F8F4FF;
+            background-image: 
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-opacity='0.1'%3E%3Cpolygon fill='%23FFB6C1' points='50 0 60 40 100 50 60 60 50 100 40 60 0 50 40 40'/%3E%3C/g%3E%3C/svg%3E"),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill-opacity='0.08'%3E%3Ccircle fill='%23E6E6FA' cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: 200px 200px, 120px 120px;
+            background-position: 0 0, 50px 50px;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            border: 3px solid #E6E6FA;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            color: #8B7EC8;
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .creator {
+            color: #D8BFD8;
+            font-size: 1.1em;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: #9370DB;
+            font-size: 1.2em;
+            font-style: italic;
+        }
+
+        .calculator-section {
+            margin-bottom: 40px;
+            padding: 30px;
+            background-color: #FFF0F5;
+            border-radius: 20px;
+            border: 2px solid #DDA0DD;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .section-title {
+            color: #8B7EC8;
+            margin-bottom: 25px;
+            font-size: 1.6em;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .matrix-input-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .matrix-container {
+            background-color: #F0F8FF;
+            padding: 25px;
+            border-radius: 15px;
+            border: 3px solid #B0E0E6;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            min-width: 300px;
+        }
+
+        .matrix-title {
+            color: #4682B4;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-align: center;
+            font-size: 1.3em;
+        }
+
+        .size-controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .size-controls label {
+            color: #4682B4;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        .size-controls input {
+            width: 60px;
+            height: 35px;
+            padding: 5px;
+            border: 2px solid #B0E0E6;
+            border-radius: 8px;
+            text-align: center;
+            background-color: #F8F8FF;
+            color: #4682B4;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .matrix-grid {
+            display: grid;
+            gap: 8px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .matrix-cell {
+            width: 65px;
+            height: 45px;
+            border: 2px solid #B0E0E6;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 16px;
+            background-color: #F8F8FF;
+            color: #4682B4;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .matrix-cell:focus {
+            outline: none;
+            border-color: #4682B4;
+            background-color: #E0F6FF;
+            transform: scale(1.05);
+        }
+
+        .matrix-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .operations {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+            padding: 0 20px;
+        }
+
+        .btn {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 3px solid transparent;
+        }
+
+        .btn-add {
+            background-color: #FFB6C1;
+            color: #8B008B;
+            border-color: #FF69B4;
+        }
+
+        .btn-add:hover {
+            background-color: #FF69B4;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-sub {
+            background-color: #FFCCCB;
+            color: #DC143C;
+            border-color: #FF6B6B;
+        }
+
+        .btn-sub:hover {
+            background-color: #FF6B6B;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-mul {
+            background-color: #DDA0DD;
+            color: #4B0082;
+            border-color: #9370DB;
+        }
+
+        .btn-mul:hover {
+            background-color: #9370DB;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-scalar {
+            background-color: #98FB98;
+            color: #006400;
+            border-color: #32CD32;
+        }
+
+        .btn-scalar:hover {
+            background-color: #32CD32;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-transpose {
+            background-color: #F0E68C;
+            color: #B8860B;
+            border-color: #DAA520;
+        }
+
+        .btn-transpose:hover {
+            background-color: #DAA520;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-determinant {
+            background-color: #FFA07A;
+            color: #D2691E;
+            border-color: #FF7F50;
+        }
+
+        .btn-determinant:hover {
+            background-color: #FF7F50;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-inverse {
+            background-color: #F5DEB3;
+            color: #8B7355;
+            border-color: #DEB887;
+        }
+
+        .btn-inverse:hover {
+            background-color: #DEB887;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-power {
+            background-color: #E0E0E0;
+            color: #696969;
+            border-color: #A9A9A9;
+        }
+
+        .btn-power:hover {
+            background-color: #A9A9A9;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-small {
+            padding: 10px 15px;
+            font-size: 14px;
+            border-radius: 15px;
+        }
+
+        .btn-random {
+            background-color: #AFEEEE;
+            color: #008B8B;
+            border-color: #20B2AA;
+        }
+
+        .btn-random:hover {
+            background-color: #20B2AA;
+            color: white;
+        }
+
+        .btn-clear {
+            background-color: #FFDAB9;
+            color: #CD853F;
+            border-color: #DEB887;
+        }
+
+        .btn-clear:hover {
+            background-color: #DEB887;
+        }
+
+        .scalar-input {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+            padding: 20px;
+            background-color: #F0FFF0;
+            border-radius: 15px;
+            border: 2px solid #98FB98;
+        }
+
+        .scalar-input label {
+            color: #006400;
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        .scalar-input input {
+            width: 100px;
+            height: 40px;
+            padding: 10px;
+            border: 2px solid #98FB98;
+            border-radius: 10px;
+            text-align: center;
+            background-color: #F8FFF8;
+            color: #006400;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .power-input {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #F5F5F5;
+            border-radius: 15px;
+            border: 2px solid #A9A9A9;
+        }
+
+        .power-input label {
+            color: #696969;
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        .power-input input {
+            width: 80px;
+            height: 40px;
+            padding: 10px;
+            border: 2px solid #A9A9A9;
+            border-radius: 10px;
+            text-align: center;
+            background-color: #FAFAFA;
+            color: #696969;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .result-section {
+            background-color: #F0F8FF;
+            padding: 30px;
+            border-radius: 20px;
+            border: 3px solid #87CEEB;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-title {
+            color: #4682B4;
+            margin-bottom: 25px;
+            font-size: 1.5em;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .result-matrix {
+            background-color: #F8F8FF;
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid #B0E0E6;
+            overflow-x: auto;
+        }
+
+        .result-grid {
+            display: grid;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .result-cell {
+            width: 80px;
+            height: 50px;
+            background-color: #E6F3FF;
+            border: 2px solid #87CEEB;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #4682B4;
+            font-size: 16px;
+        }
+
+        .result-scalar {
+            text-align: center;
+            font-size: 2em;
+            font-weight: 700;
+            color: #4682B4;
+            padding: 20px;
+            background-color: #E6F3FF;
+            border-radius: 15px;
+            border: 3px solid #87CEEB;
+            margin: 20px 0;
+        }
+
+        .error-message {
+            background-color: #FFE4E1;
+            color: #DC143C;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: 700;
+            border: 3px solid #FF6B6B;
+            font-size: 1.1em;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #F5F0FF;
+            border-radius: 15px;
+            border: 2px solid #DDA0DD;
+        }
+
+        .footer p {
+            color: #8B7EC8;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .matrix-input-section {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .operations {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔢 Kalkulator Matriks</h1>
+            <p class="creator">Dibuat oleh: Shinta Aulia Zahra</p>
+            <p class="subtitle">Kalkulator Matriks Lengkap dengan Berbagai Operasi</p>
+        </div>
+        
+        <div class="calculator-section">
+            <h2 class="section-title">📊 Input Matriks</h2>
+            
+            <div class="matrix-input-section">
+                <div class="matrix-container">
+                    <h3 class="matrix-title">Matriks A</h3>
+                    <div class="size-controls">
+                        <label>Baris:</label>
+                        <input type="number" id="rowsA" value="3" min="1" max="5" onchange="createMatrix('A')">
+                        <label>Kolom:</label>
+                        <input type="number" id="colsA" value="3" min="1" max="5" onchange="createMatrix('A')">
+                    </div>
+                    <div id="matrixA" class="matrix-grid"></div>
+                    <div class="matrix-buttons">
+                        <button class="btn btn-small btn-random" onclick="randomFillMatrix('A')">🎲 Random</button>
+                        <button class="btn btn-small btn-clear" onclick="clearMatrix('A')">🗑️ Kosongkan</button>
+                    </div>
+                </div>
+                
+                <div class="matrix-container">
+                    <h3 class="matrix-title">Matriks B</h3>
+                    <div class="size-controls">
+                        <label>Baris:</label>
+                        <input type="number" id="rowsB" value="3" min="1" max="5" onchange="createMatrix('B')">
+                        <label>Kolom:</label>
+                        <input type="number" id="colsB" value="3" min="1" max="5" onchange="createMatrix('B')">
+                    </div>
+                    <div id="matrixB" class="matrix-grid"></div>
+                    <div class="matrix-buttons">
+                        <button class="btn btn-small btn-random" onclick="randomFillMatrix('B')">🎲 Random</button>
+                        <button class="btn btn-small btn-clear" onclick="clearMatrix('B')">🗑️ Kosongkan</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="scalar-input">
+                <label>💚 Nilai Skalar:</label>
+                <input type="number" id="scalarValue" value="2" step="0.1">
+            </div>
+            
+            <div class="power-input">
+                <label>⚡ Pangkat:</label>
+                <input type="number" id="powerValue" value="2" min="1" max="10">
+            </div>
+            
+            <h3 class="section-title">🔧 Operasi Matriks</h3>
+            <div class="operations">
+                <button class="btn btn-add" onclick="performOperation('add')">➕ A + B</button>
+                <button class="btn btn-sub" onclick="performOperation('subtract')">➖ A - B</button>
+                <button class="btn btn-mul" onclick="performOperation('multiply')">✖️ A × B</button>
+                <button class="btn btn-scalar" onclick="performOperation('scalarA')">💚 Skalar × A</button>
+                <button class="btn btn-scalar" onclick="performOperation('scalarB')">💚 Skalar × B</button>
+                <button class="btn btn-transpose" onclick="performOperation('transposeA')">🔄 Transpose A</button>
+                <button class="btn btn-transpose" onclick="performOperation('transposeB')">🔄 Transpose B</button>
+                <button class="btn btn-determinant" onclick="performOperation('detA')">🔍 Determinan A</button>
+                <button class="btn btn-determinant" onclick="performOperation('detB')">🔍 Determinan B</button>
+                <button class="btn btn-inverse" onclick="performOperation('invA')">🔀 Invers A</button>
+                <button class="btn btn-inverse" onclick="performOperation('invB')">🔀 Invers B</button>
+                <button class="btn btn-power" onclick="performOperation('powerA')">⚡ A^n</button>
+            </div>
+        </div>
+        
+        <div class="result-section">
+            <h2 class="result-title">📋 Hasil Perhitungan</h2>
+            <div id="resultContainer" class="result-matrix">
+                <p style="text-align: center; color: #4682B4; font-style: italic; font-size: 1.2em;">Pilih operasi untuk melihat hasil perhitungan</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2025 Shinta Aulia Zahra - Kalkulator Matriks Lengkap</p>
+        </div>
+    </div>
+
+    <script>
+        // Inisialisasi matriks
+        function createMatrix(matrixName) {
+            const rows = parseInt(document.getElementById(`rows${matrixName}`).value);
+            const cols = parseInt(document.getElementById(`cols${matrixName}`).value);
+            const container = document.getElementById(`matrix${matrixName}`);
+            
+            container.innerHTML = '';
+            container.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+            
+            for (let i = 0; i < rows; i++) {
+                for (let j = 0; j < cols; j++) {
+                    const input = document.createElement('input');
+                    input.type = 'number';
+                    input.className = 'matrix-cell';
+                    input.id = `${matrixName}_${i}_${j}`;
+                    input.placeholder = '0';
+                    input.step = '0.1';
+                    container.appendChild(input);
+                }
+            }
+        }
+        
+        // Mengisi matriks dengan nilai random
+        function randomFillMatrix(matrixName) {
+            const rows = parseInt(document.getElementById(`rows${matrixName}`).value);
+            const cols = parseInt(document.getElementById(`cols${matrixName}`).value);
+            
+            for (let i = 0; i < rows; i++) {
+                for (let j = 0; j < cols; j++) {
+                    const cell = document.getElementById(`${matrixName}_${i}_${j}`);
+                    cell.value = Math.floor(Math.random() * 21) - 10; // Random -10 to 10
+                }
+            }
+        }
+        
+        // Mengosongkan matriks
+        function clearMatrix(matrixName) {
+            const rows = parseInt(document.getElementById(`rows${matrixName}`).value);
+            const cols = parseInt(document.getElementById(`cols${matrixName}`).value);
+            
+            for (let i = 0; i < rows; i++) {
+                for (let j = 0; j < cols; j++) {
+                    const cell = document.getElementById(`${matrixName}_${i}_${j}`);
+                    cell.value = '';
+                }
+            }
+        }
+        
+        // Mendapatkan nilai matriks
+        function getMatrix(matrixName) {
+            const rows = parseInt(document.getElementById(`rows${matrixName}`).value);
+            const cols = parseInt(document.getElementById(`cols${matrixName}`).value);
+            const matrix = [];
+            
+            for (let i = 0; i < rows; i++) {
+                matrix[i] = [];
+                for (let j = 0; j < cols; j++) {
+                    const cell = document.getElementById(`${matrixName}_${i}_${j}`);
+                    matrix[i][j] = parseFloat(cell.value) || 0;
+                }
+            }
+            
+            return matrix;
+        }
+        
+        // Menampilkan hasil matriks
+        function displayResult(matrix, title) {
+            const container = document.getElementById('resultContainer');
+            
+            if (!matrix) {
+                container.innerHTML = '<p style="text-align: center; color: #DC143C;">❌ Terjadi kesalahan dalam perhitungan</p>';
+                return;
+            }
+            
+            const rows = matrix.length;
+            const cols = matrix[0].length;
+            
+            let html = `<h3 style="text-align: center; color: #4682B4; margin-bottom: 20px;">${title}</h3>`;
+            html += `<div class="result-grid" style="grid-template-columns: repeat(${cols}, 1fr);">`;
+            
+            for (let i = 0; i < rows; i++) {
+                for (let j = 0; j < cols; j++) {
+                    const value = typeof matrix[i][j] === 'number' ? matrix[i][j].toFixed(3) : matrix[i][j];
+                    html += `<div class="result-cell">${value}</div>`;
+                }
+            }
+            
+            html += '</div>';
+            container.innerHTML = html;
+        }
+        
+        // Menampilkan hasil skalar
+        function displayScalarResult(value, title) {
+            const container = document.getElementById('resultContainer');
+            const displayValue = typeof value === 'number' ? value.toFixed(6) : value;
+            container.innerHTML = `
+                <h3 style="text-align: center; color: #4682B4; margin-bottom: 20px;">${title}</h3>
+                <div class="result-scalar">${displayValue}</div>
+            `;
+        }
+        
+        // Menampilkan pesan error
+        function displayError(message) {
+            const container = document.getElementById('resultContainer');
+            container.innerHTML = `<div class="error-message">❌ ${message}</div>`;
+        }
+        
+        // Operasi matriks
+        function performOperation(operation) {
+            try {
+                const matrixA = getMatrix('A');
+                const matrixB = getMatrix('B');
+                const scalar = parseFloat(document.getElementById('scalarValue').value) || 1;
+                const power = parseInt(document.getElementById('powerValue').value) || 2;
+                
+                let result, title;
+                
+                switch(operation) {
+                    case 'add':
+                        if (matrixA.length !== matrixB.length || matrixA[0].length !== matrixB[0].length) {
+                            displayError('Matriks harus memiliki ukuran yang sama untuk penjumlahan!');
+                            return;
+                        }
+                        result = addMatrices(matrixA, matrixB);
+                        title = '➕ Hasil A + B';
+                        displayResult(result, title);
+                        break;
+                        
+                    case 'subtract':
+                        if (matrixA.length !== matrixB.length || matrixA[0].length !== matrixB[0].length) {
+                            displayError('Matriks harus memiliki ukuran yang sama untuk pengurangan!');
+                            return;
+                        }
+                        result = subtractMatrices(matrixA, matrixB);
+                        title = '➖ Hasil A - B';
+                        displayResult(result, title);
+                        break;
+                        
+                    case 'multiply':
+                        if (matrixA[0].length !== matrixB.length) {
+                            displayError('Jumlah kolom A harus sama dengan jumlah baris B untuk perkalian!');
+                            return;
+                        }
+                        result = multiplyMatrices(matrixA, matrixB);
+                        title = '✖️ Hasil A × B';
+                        displayResult(result, title);
+                        break;
+                        
+                    case 'scalarA':
+                        result = scalarMultiply(matrixA, scalar);
+                        title = `💚 Hasil ${scalar} × A`;
+                        displayResult(result, title);
+                        break;
+                        
+                    case 'scalarB':
+                        result = scalarMultiply(matrixB, scalar);
+                        title = `💚 Hasil ${scalar} × B`;
+                        displayResult(result, title);
+                        break;
+                        
+                    case 'transposeA':
+                        result = transpose(matrixA);
+                        title = '🔄 Transpose A';
+                        displayResult(result, title);
+                        break;
+                        
+                    case 'transposeB':
+                        result = transpose(matrixB);
+                        title = '🔄 Transpose B';
+                        displayResult(result, title);
+                        break;
+                        
+                    case 'detA':
+                        if (matrixA.length !== matrixA[0].length) {
+                            displayError('Determinan hanya bisa dihitung untuk matriks persegi!');
+                            return;
+                        }
+                        result = determinant(matrixA);
+                        title = '🔍 Determinan A';
+                        displayScalarResult(result, title);
+                        break;
+                        
+                    case 'detB':
+                        if (matrixB.length !== matrixB[0].length) {
+                            displayError('Determinan hanya bisa dihitung untuk matriks persegi!');
+                            return;
+                        }
+                        result = determinant(matrixB);
+                        title = '🔍 Determinan B';
+                        displayScalarResult(result, title);
+                        break;
+                        
+                    case 'invA':
+                        if (matrixA.length !== matrixA[0].length) {
+                            displayError('Invers hanya bisa dihitung untuk matriks persegi!');
+                            return;
+                        }
+                        const detA = determinant(matrixA);
+                        if (Math.abs(detA) < 1e-10) {
+                            displayError('Matriks singular! Invers tidak ada (determinan = 0).');
+                            return;
+                        }
+                        result = inverse(matrixA);
+                        title = '🔀 Invers A';
+                        displayResult(result, title);
+                        break;
+                        
+                    case 'invB':
+                        if (matrixB.length !== matrixB[0].length) {
+                            displayError('Invers hanya bisa dihitung untuk matriks persegi!');
+                            return;
+                        }
+                        const detB = determinant(matrixB);
+                        if (Math.abs(detB) < 1e-10) {
+                            displayError('Matriks singular! Invers tidak ada (determinan = 0).');
+                            return;
+                        }
+                        result = inverse(matrixB);
+                        title = '🔀 Invers B';
+                        displayResult(result, title);
+                        break;
+                        
+                    case 'powerA':
+                        if (matrixA.length !== matrixA[0].length) {
+                            displayError('Pangkat matriks hanya bisa dihitung untuk matriks persegi!');
+                            return;
+                        }
+                        if (power < 1) {
+                            displayError('Pangkat harus bilangan positif!');
+                            return;
+                        }
